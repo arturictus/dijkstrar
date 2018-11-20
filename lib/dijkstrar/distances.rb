@@ -1,38 +1,49 @@
 module Dijkstrar
   class Distances
+
     def initialize(root)
       @root = root
       @cells = {}
       @cells[@root.id] = 0
     end
 
-
     def [](cell)
       @cells[cell.id]
     end
-
 
     def []=(cell, distance)
       @cells[cell.id] = distance
     end
 
-
     def cells
       @cells.keys
     end
 
+    # def path_to(goal)
+    #   current = goal
+    #   recursive(goal, 1)
+    #
+    # end
+    #
+    # def recursive(cell, distance)
+    #   cell.links.each do |neighbor|
+    #     self[neighbor] = distance
+    #     break if neighbor == @root
+    #     recursive(neighbor, distance + 1)
+    #   end
+    # end
+
+
     def path_to(goal)
       current = goal
       breadcrumbs = Distances.new(@root)
-      breadcrumbs[current] = @cells[current]
+      breadcrumbs[current] = self[current]
       until current == @root
-        puts "user id: #{current}"
+        puts @cells
         current.links.each do |neighbor|
-          # binding.pry
-          puts "cellls: #{@cells}"
           begin
-            if @cells[neighbor] < @cells[current]
-              breadcrumbs[neighbor] = @cells[neighbor]
+            if self[neighbor] < self[current]
+              breadcrumbs[neighbor] = self[neighbor]
               current = neighbor
               break
             end
